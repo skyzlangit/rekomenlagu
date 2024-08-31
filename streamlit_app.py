@@ -22,8 +22,15 @@ if user_input:
         for index, result in enumerate(results, start=1):
             video_url = result.watch_url
             title = result.title
-            views = f"{result.views:,} views"  # format with commas
-            published = result.publish_date.strftime('%Y-%m-%d')
+            
+            # Handle the views attribute safely
+            try:
+                views = f"{int(result.views):,} views" if result.views else "Views not available"
+            except (TypeError, ValueError):
+                views = "Views not available"
+
+            # Handle the publication date safely
+            published = result.publish_date.strftime('%Y-%m-%d') if result.publish_date else "Date not available"
             
             st.write(f"**{index}. {title}**")
             st.write(f"*Views: {views} | Published on: {published}*")
